@@ -1,0 +1,270 @@
+@import '~antd/dist/antd.css';
+
+@import 'react-chat-elements/dist/main.css';
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.full-height {
+  height: 100vh;
+  min-height: 400px;
+}
+
+.layout {
+  height: 100%;
+}
+
+.sider {
+  border: solid 1px #d2caca;
+}
+
+.sider .sider-header {
+  background: #ffffff;
+  border-bottom: solid 1px #d2caca;
+  height: 109px;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  margin: 10px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.user-info__full-name {
+  margin-left: 8px;
+  margin-bottom: 0 !important;
+}
+
+.sider .ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sider-tab {
+  flex: 1;
+}
+
+.sider-tab .ant-tabs-nav-list {
+  width: 100%;
+}
+
+.sider-tab .ant-tabs-nav-list .ant-tabs-tab {
+  flex: 0 0 33.3%;
+  margin-left: 0 !important;
+  justify-content: center;
+}
+
+.contact-item {
+  padding: 12px 4px;
+}
+
+.contact-item:hover {
+  cursor: pointer;
+  background: #fafafa;
+}
+
+.header {
+  background: #ffffff;
+  border: solid 1px #d2caca;
+  height: 110px;
+  padding: 10px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.header-content {
+  height: 62px;
+}
+
+.header-left {
+  display: inline-flex;
+  height: 62px;
+}
+
+.header-right {
+  display: inline-flex;
+  height: 62px;
+  justify-content: flex-end;
+}
+
+.contact-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.contact-info__status {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  height: 25px;
+}
+
+.header-right__icon {
+  font-size: 30px;
+  color: #1070bda6;
+}
+
+.account-status-text {
+  margin-left: 5px;
+  margin-top: -25px;
+}
+
+.content {
+  height: 100%;
+  padding-bottom: 80px;
+}
+
+.layout {
+  position: relative;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.message-container {
+  padding: 24px 50px;
+  background: #f0f2f5;
+  height: 100%;
+  overflow: auto;
+}
+
+.message-item {
+  position: relative;
+}
+
+.avatar-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(100%, -40%);
+}
+
+.avatar-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-100%, -40%);
+}
+
+.message-box {
+  background-color: unset;
+  display: flex;
+  align-items: center;
+}
+
+.message-box .message-box-input-textarea {
+  border-radius: 20px;
+  margin-right: 10px;
+  padding: 10px 10px;
+  resize: none;
+  overflow: hidden;
+  max-width: 100%;
+  width: 100%;
+  outline: none;
+}
+
+.user-profile .ant-modal-body {
+  padding: 0;
+}
+
+.user-profile__header {
+}
+
+.user-profile__container-avatar {
+  background-color: #1070bda6;
+  height: 100px;
+  position: relative;
+}
+.user-profile__container-full-name {
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-profile__avatar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 1px 1px 15px -5px black;
+  transition: all 0.3s ease;
+}
+
+.user-profile__avatar:hover {
+  transform: scale(1.05) translate(-48%, -27%);
+  cursor: pointer;
+}
+
+.user-profile__avatar:hover .ant-avatar-circle {
+  opacity: 0.5;
+}
+
+.user-profile__avatar .ant-avatar-circle {
+  height: 100%;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: #34495e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-profile__avatar:hover .overlay {
+  opacity: 0.9;
+}
+
+.btn-edit-name {
+  position: absolute;
+  transform: translate(0, -30%);
+  right: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.user-profile__content {
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.loading-more-message {
+  display: flex;
+  justify-content: center;
+}
