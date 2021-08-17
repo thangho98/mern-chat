@@ -41,9 +41,6 @@ const HomePage = () => {
       clearCacheEntry: true,
     })
       .then((result) => {
-        console.log({
-          data: result.data,
-        });
         setCurrentUser(result.data);
       })
       .catch((error) => {
@@ -111,7 +108,7 @@ const HomePage = () => {
         });
     }
   };
-  console.log({ currentUser });
+  
   return (
     <Layout className="layout">
       <Sider className="sider" width="300" theme="light">

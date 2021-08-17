@@ -10,6 +10,7 @@
     "antd": "^4.16.8",
     "axios": "^0.21.1",
     "axios-cache-adapter": "^2.7.3",
+    "emoji-mart": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "react": "^17.0.2",
     "react-chat-elements": "^10.15.0",

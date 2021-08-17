@@ -110,7 +110,6 @@ const Messages = ({
           />
         );
       })}
-
       {/* <SystemMessage text={'End of conversation'} /> */}
     </div>
   );

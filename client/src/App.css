@@ -127,7 +127,6 @@
 
 .content {
   height: 100%;
-  padding-bottom: 80px;
 }
 
 .layout {
@@ -135,7 +134,6 @@
 }
 
 .footer {
-  position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
@@ -170,18 +168,20 @@
 .message-box {
   background-color: unset;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .message-box .message-box-input-textarea {
   border-radius: 20px;
-  margin-right: 10px;
   padding: 10px 10px;
   resize: none;
   overflow: hidden;
   max-width: 100%;
   width: 100%;
   outline: none;
+  padding-right: 40px;
+  box-shadow: none;
+  border-color: #d9d9d9;
 }
 
 .user-profile .ant-modal-body {
@@ -267,4 +267,81 @@
 .loading-more-message {
   display: flex;
   justify-content: center;
+}
+
+.message-input {
+  position: relative;
+  width: 100%;
+  margin-right: 10px;
+}
+
+.btn-emoji {
+  position: absolute;
+  right: 1px;
+  border: none;
+  bottom: 1px;
+}
+
+.message-btn {
+  margin: 2px;
+  margin-bottom: 4px;
+}
+
+.img-upload-preview {
+  margin: 8px;
+  position: relative;
+}
+
+.preview-images-container {
+  display: flex;
+}
+
+.btn-remove-image {
+  position: absolute;
+  right: 2px;
+  top: 0;
+  cursor: pointer;
+}
+
+.btn-upload-image-preview {
+  width: 75px;
+  height: 75px;
+  margin: 8px;
+  text-align: center;
+  vertical-align: top;
+  background-color: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.img-preview {
+  border-radius: 2px;
+}
+
+.preview-container .message-input {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #d9d9d9;
+}
+
+.preview-container .preview-images-container {
+  margin: 0px 5px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.preview-container .message-box-input-textarea {
+  border-radius: 0px 0px 20px 20px;
+  border: none;
+  box-shadow: none;
+}
+
+.preview-container .message-box-input-textarea:focus:active {
+  border-radius: 0px 0px 20px 20px;
+  box-shadow: none;
 }
