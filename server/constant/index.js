@@ -1,0 +1,1 @@
+export const DEFAULT_LIMIT_MESSAGE = 20;

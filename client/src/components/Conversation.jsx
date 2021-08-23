@@ -83,7 +83,7 @@ const Conversation = ({ currentUser, conversation }) => {
         <Messages
           currentUser={currentUser}
           messages={messages}
-          autoScrollBottom={!isFirstLoad}
+          isFirstLoad={!isFirstLoad}
           onLoadMoreOldMessages={loadMoreOldMessages}
           isLoadMoreData={isLoadMoreData}
           isStillOldMessage={isStillOldMessage}

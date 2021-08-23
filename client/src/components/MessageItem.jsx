@@ -1,7 +1,7 @@
 import Avatar from 'antd/lib/avatar/avatar';
 import React from 'react';
 import { MessageBox } from 'react-chat-elements';
-import { stringToColour, stringToColourV2 } from '../utils/Colors';
+import { stringToColourV2 } from '../utils/Colors';
 const MessageItem = ({ position, type, reply, onReplyMessageClick, text, avatarUrl, fullName, senderId, backgroundColor, ...rest }) => {
   return (
     <div className="message-item">
@@ -28,6 +28,7 @@ const MessageItem = ({ position, type, reply, onReplyMessageClick, text, avatarU
         position={position}
         type={type}
         text={text}
+        title={fullName}
         {...rest}
       />
     </div>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import socketIOClient from 'socket.io-client';
+import HttpClient from '../utils/HttpClient';
 
 const useChat = ({ conversationId, userId }) => {
   const socketRef = useRef(null);
@@ -46,6 +47,7 @@ const useChat = ({ conversationId, userId }) => {
       //and means you won't be able to append more messages
       //so instead we use the above, that's we use a callback that will get the latest value of messages
       //and then appends the latest data
+      console.log("message: ", message);
       skip.current = skip.current + 1;
       setMessages((messages) => [...messages, message]);
       setIsReceiveNewMessage(true);
@@ -59,6 +61,11 @@ const useChat = ({ conversationId, userId }) => {
       setIsLoadMoreDataSuccess(true);
     });
 
+    socketRef.current.on('retryConnect', (data) => {
+      console.log(data);
+      socketRef.current.emit('join', { conversationId, userId });
+    });
+
     return () => {
       socketRef.current.disconnect();
     };
@@ -66,11 +73,34 @@ const useChat = ({ conversationId, userId }) => {
 
   //message is part of an object
   const sendMessage = (messageObject) => {
-    socketRef.current.emit('newChatMessage', {
-      ...messageObject,
-      conversationId,
-      userId,
-    });
+    return new Promise((resolve, reject) => {
+      if (messageObject.files && Array.isArray(messageObject.files) && messageObject.files.length) {
+        const formData = new FormData();
+        messageObject.files.forEach((file) => {
+          formData.append('files', file);
+        });
+        formData.append('text', messageObject.text);
+        formData.append('conversationId', conversationId);
+        formData.append('senderId', userId);
+        HttpClient.post('/messages/send', formData)
+          .then((message) => {
+            console.log(message);
+            resolve();
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      } else {
+        socketRef.current.emit('newChatMessage', {
+          ...messageObject,
+          conversationId,
+          senderId: userId,
+        });
+        resolve();
+      }
+    })
+
   };
 
   // load more old messages

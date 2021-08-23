@@ -5,7 +5,7 @@ const MIN_OFFSET_ALLOW_LOAD_MORE_DATA = 10;
 const Messages = ({
   messages,
   currentUser,
-  autoScrollBottom,
+  isFirstLoad,
   onLoadMoreOldMessages,
   isLoadMoreData,
   isStillOldMessage,
@@ -55,12 +55,12 @@ const Messages = ({
 
   useEffect(() => {
     if (!isScrollFinished) {
-      if (autoScrollBottom) {
+      if (isFirstLoad) {
         setTimeout(handleScrollBottom, 200);
         setScrollFinished(true);
       }
     }
-  }, [autoScrollBottom, isScrollFinished]);
+  }, [isFirstLoad, isScrollFinished]);
 
   useEffect(() => {
     if (isReceiveNewMessage) {
@@ -80,7 +80,7 @@ const Messages = ({
 
   const handleScrollBottom = () => {
     const element = document.getElementById('message-container');
-    element.scrollTop = element.offsetHeight;
+    element.scrollTop = element.scrollHeight - element.offsetHeight;
   };
 
   const handleScrollOldPosition = () => {
@@ -101,12 +101,15 @@ const Messages = ({
             key={message._id}
             onReplyMessageClick={() => console.log('reply clicked!')}
             position={message.senderId === currentUser._id ? 'right' : 'left'}
-            type={'text'}
+            type={message.files.length  > 0 ? 'photo' : 'text'}
             text={message.text}
             date={new Date(message.createdAt)}
             fullName={message.sender.fullName}
             senderId={message.senderId}
             avatarUrl={message.sender.avatar ? message.sender.avatar.url : null}
+            data={message.files.length  > 0 ? {
+              uri: message.files[0].url,
+          }: undefined}
           />
         );
       })}

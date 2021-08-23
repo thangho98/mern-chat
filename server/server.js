@@ -3,18 +3,17 @@ import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 import socketIO from 'socket.io';
-import { Conversation } from './app/models/conversation.model';
-import { Message } from './app/models/message.model';
+import { MessageService } from './app/services/messages.service';
 import mongoConnect from './common/database/mongodb/mongo';
 import AppConfig from './configs';
+import { DEFAULT_LIMIT_MESSAGE } from './constant';
 import ApiRouters from './routes';
+import socketEvent from './socket-even';
 import {
   getUserConversationSession,
   removeUserConversationSession,
   userJoinConversation
 } from './user-session';
-
-const DEFAULT_LIMIT_MESSAGE = 20;
 
 const io = socketIO(process.env.SOCKET_PORT, {
   cors: {
@@ -30,6 +29,9 @@ io.on('connection', (socket) => {
   // Welcome current user
   socket.emit('log', 'Welcome to AppChat!');
 
+  // Welcome current user
+  socket.emit('retryConnect', 'retry connect socket...');
+
   socket.on('join', function ({ conversationId, userId }) {
     const session = userJoinConversation(socket.id, userId, conversationId);
     console.log({
@@ -41,13 +43,7 @@ io.on('connection', (socket) => {
     // Broadcast when a user connects
     socket.broadcast.to(conversationId).emit('log', `${userId} has joined the chat`);
 
-    //  // Send users and room info
-    //  io.to(user.room).emit('roomUsers', {
-    //   room: user.room,
-    //   users: getRoomUsers(user.room)
-    // });
-
-    getMostRecentMessages(conversationId)
+    MessageService.getMostRecentMessages(conversationId)
       .then((results) => {
         socket.emit('mostRecentMessages', {
           messages: results,
@@ -64,8 +60,7 @@ io.on('connection', (socket) => {
 
   socket.on('loadMoreOldMessage', (data) => {
     const {conversationId, skip} = data;
-    console.log(data);
-    getLastMessagesByOffsetLimit(conversationId, skip)
+    MessageService.getLastMessagesByOffsetLimit(conversationId, skip)
     .then((results) => {
       socket.emit('dataOldMessages', {
         messages: results,
@@ -82,30 +77,27 @@ io.on('connection', (socket) => {
 
   socket.on('newChatMessage', (data) => {
     //send event to every single connected socket
-    console.log({
-      data,
-    });
 
     try {
-      const message = new Message({
-        senderId: data.userId,
-        conversationId: data.conversationId,
-        text: data.text,
-      });
-      message
-        .save()
-        .then(() => {
+      MessageService.savedMessage(data)
+        .then((newMessage) => {
           const session = getUserConversationSession(socket.id, data.conversationId);
-          updateConversation(data.conversationId, data.text);
-          Message.findById(message._id).populate('sender').then((newMessage)=>{
-            if (session) {
-              io.to(session.conversationId).emit('newChatMessage', newMessage);
-            }
-          });
+          if (session) {
+            io.to(session.conversationId).emit('newChatMessage', newMessage);
+          }
         })
         .catch((error) => console.log('error: ' + error));
     } catch (e) {
       console.log('error: ' + e);
+    }
+  });
+
+  socketEvent.on('newMessage',(newMessage)=>{
+  
+    const session = getUserConversationSession(socket.id, newMessage.conversationId);
+    if (session) {
+      console.log('newMessage: ' + newMessage);
+      io.to(session.conversationId).emit('newChatMessage', newMessage);
     }
   });
 
@@ -125,36 +117,7 @@ io.on('connection', (socket) => {
   });
 });
 
-/**
- * get 10 last messages
- * @returns {Promise<Model[]>}
- */
-async function getMostRecentMessages(conversationId) {
-  return getLastMessagesByOffsetLimit(conversationId, 0);
-}
 
-/**
- * get last messages by limit offset
- * @returns {Promise<Model[]>}
- */
-async function getLastMessagesByOffsetLimit(conversationId, skip) {
-  const data =  await Message.find({
-    conversationId,
-  })
-    .populate('sender')
-    .sort({ _id: -1 })
-    .skip(skip)
-    .limit(DEFAULT_LIMIT_MESSAGE);
-  return data.reverse();
-}
-async function updateConversation(conversationId, messageText) {
-  const conversation = await Conversation.findById(conversationId);
-  if (conversation) {
-    conversation.totalMessages = conversation.totalMessages + 1;
-    conversation.lastMessage = messageText;
-    conversation.save();
-  }
-}
 
 app.use((req, res, next) => {
   //allow access from every, elminate CORS

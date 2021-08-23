@@ -18,13 +18,19 @@ const MessageBox = ({ sendMessage }) => {
 
   const handleSendMessage = () => {
     const value = messageText.trim();
-    if (value) {
+    if (value || listFiles.length) {
       const messageObject = {
         text: messageText,
+        files: listFiles
       };
-      sendMessage(messageObject);
+      sendMessage(messageObject).then(() => {
+        setMessageText('');
+        SetListFiles([]);
+        SetListPreviewFiles([]);
+      }).catch((error) =>{
+
+      });
     }
-    setMessageText('');
   };
 
   const content = (
@@ -78,7 +84,6 @@ const MessageBox = ({ sendMessage }) => {
     SetListPreviewFiles((listPreviewFiles) => [...listPreviewFiles]);
     SetListFiles((listFiles) => [...listFiles]);
   };
-  console.log({ listFiles, listPreviewFiles });
   return (
     <div className={`message-box ${listPreviewFiles.length ? 'preview-container' : ''}`}>
       <div className="message-input">
@@ -93,7 +98,7 @@ const MessageBox = ({ sendMessage }) => {
                 }}
               />
             ))}
-            {uploadButton}
+            {/* {uploadButton} */}
           </div>
         ) : null}
         <TextArea
